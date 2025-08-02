@@ -95,9 +95,26 @@ KQLIntel is a pure client-side application and requires no backend. You can run 
     -   **AI-Assisted Hunting Queries:** Click "Suggest Advanced Queries" for more complex, behavior-based KQL queries.
     -   **Mitigation Suggestions:** After generating a summary, click "Suggest Mitigations" for recommended response actions.
 
-## 🤝 Contributing
+## 🤝 Contributing & Future Enhancement Roadmap
 
-Contributions, issues, and feature requests are welcome! Please feel free to check the [issues page](https://github.com/your-username/KQLIntel/issues) to see if your idea has already been discussed.
+Contributions, issues, and feature requests are welcome! Please feel free to check the [issues page](https://github.com/Var5h1l/KQLIntel/issues) to see if your idea has already been discussed.
+
+KQLIntel is actively evolving! Planned enhancements include:
+
+- **KQL Query Enhancer & Optimizer:**  
+  Improve generated KQL queries for performance, best practices, and reduced resource consumption.
+
+- **Multiple URL Report Support:**  
+  Enable users to analyze and generate KQL from several threat intelligence report URLs simultaneously.
+
+- **API-Free Report Generation:**  
+  Allow users to generate basic reports and queries without requiring an API key, making the tool more accessible.
+
+- **Integration of New AI Models:**  
+  Expand compatibility by adding support for additional AI models and providers, enhancing flexibility and accuracy.
+
+---
+
 
 ## 👤 Author
 
