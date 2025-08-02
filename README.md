@@ -33,9 +33,23 @@ The tool is designed for security analysts, threat hunters, and incident respond
 
 ## 🚀 Live Demo & Screenshots
 
-*(You can add a link to your live GitHub Pages site here once deployed)*
+<b>1. URL / Threat Report Page</b>
 
-*(Consider adding screenshots of the tool in action here)*
+<img width="1836" height="880" alt="image" src="https://github.com/user-attachments/assets/98c9fd3c-326c-4a12-8cba-9dd4d2aedcc1" />
+<br></br>
+<b>2. KQL Queries</b>
+<br></br>
+
+<img width="1872" height="880" alt="image" src="https://github.com/user-attachments/assets/9f45aadb-230e-48a1-8a44-fad415d1f072" />
+<br></br>
+<b>3. AI Generated Recommendations</b>
+<br></br>
+<img width="1851" height="807" alt="image" src="https://github.com/user-attachments/assets/2da910d1-43f5-40ae-ba87-ce612e36e89f" />
+<br></br>
+<b>4. API Configurations</b>
+<br></br>
+<img width="1086" height="832" alt="image" src="https://github.com/user-attachments/assets/865309ed-e733-4b40-8612-5d9a160b360d" />
+
 
 ## 🛠️ Getting Started
 
