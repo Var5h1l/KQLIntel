@@ -7,9 +7,9 @@
 </div>
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/your-username/KQLIntel?color=%236366f1">
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/your-username/KQLIntel?color=%23a78bfa">
-  <img alt="GitHub" src="https://img.shields.io/github/license/your-username/KQLIntel?color=%23f472b6">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Var5h1l/KQLIntel?color=%236366f1">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/Var5h1l/KQLIntel?color=%23a78bfa">
+  <img alt="GitHub" src="https://img.shields.io/github/license/Var5h1l/KQLIntel?color=%23f472b6">
 </p>
 
 ---
