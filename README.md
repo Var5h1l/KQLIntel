@@ -44,7 +44,8 @@ KQLIntel is a pure client-side application and requires no backend. You can run 
 ### Prerequisites
 
 -   A modern web browser (Chrome, Firefox, Edge, Safari).
--   An API key from a supported LLM provider (e.g., [Google AI Studio](https://aistudio.google.com/)).
+-   An API key from a supported LLM provider (e.g., [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) OR [Google AI Studio](https://aistudio.google.com/)), etc.
+- 
 
 ### Installation
 
