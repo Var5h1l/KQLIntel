@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KQLIntel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+    <div class="background-aurora"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+        <!-- Header -->
+        <header class="text-center mb-8 pt-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3">KQLIntel</h1>
+            <p class="text-lg">Go from unstructured report to actionable hunt in seconds.</p>
+        </header>
+
+        <!-- Header Buttons -->
+        <div class="absolute top-5 right-5 flex items-center space-x-2">
+            <button id="theme-toggle-btn" class="btn-secondary rounded-md p-2 text-sm font-semibold">
+                <svg id="theme-sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg id="theme-moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+            <button id="settings-btn" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">Set API Keys</button>
+        </div>
+
+        <main>
+            <!-- Input Card -->
+            <div class="card rounded-2xl p-8 mb-8">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="toggle-container p-1 rounded-lg flex gap-1">
+                        <button id="toggle-url" class="toggle-btn px-4 py-2 rounded-md text-sm font-medium">URL</button>
+                        <button id="toggle-text" class="toggle-btn px-4 py-2 rounded-md text-sm font-medium">Raw Text</button>
+                    </div>
+                </div>
+
+                <div id="input-url-container">
+                    <label for="url-input" class="input-label block text-sm font-medium mb-2">Threat Report URL</label>
+                    <input type="url" id="url-input" class="input-field w-full rounded-md p-3" placeholder="https://securityblog.com/new-threat-analysis">
+                </div>
+
+                <div id="input-text-container" class="hidden">
+                    <label for="text-input" class="input-label block text-sm font-medium mb-2">Unstructured Threat Intel</label>
+                    <textarea id="text-input" rows="8" class="input-field w-full rounded-md p-3" placeholder="Paste IOCs, report snippets, or any raw intelligence here..."></textarea>
+                </div>
+
+                <!-- AI Provider Selection -->
+                <div class="mt-6">
+                    <label for="provider-select" class="input-label block text-sm font-medium mb-2">Select AI Provider</label>
+                    <select id="provider-select" class="input-field w-full rounded-md p-3">
+                        <option value="google">Google Gemini</option>
+                        <option value="openrouter">OpenRouter (Free Models Available)</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="azure">Azure OpenAI</option>
+                        <option value="anthropic">Anthropic Claude</option>
+                    </select>
+                </div>
+                 <div class="mt-4">
+                    <label for="model-select" id="model-select-label" class="input-label block text-sm font-medium mb-2">Select Model</label>
+                    <select id="model-select" class="input-field w-full rounded-md p-3"></select>
+                    <div id="azure-settings-prompt" class="hidden text-center mt-2">
+                        <p class="text-sm">Model is defined by your deployment name.</p>
+                        <button id="azure-configure-btn" class="text-sm text-indigo-400 hover:underline">Configure Azure Credentials</button>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-center items-center">
+                    <button id="analyze-btn" class="btn-primary rounded-md px-6 py-3 font-semibold flex items-center">
+                        <span class="mr-2">✨</span> Analyze & Generate KQL
+                    </button>
+                    <div id="spinner" class="ml-4 hidden">
+                         <div class="w-8 h-8 border-4 border-gray-400 border-t-white rounded-full animate-spin"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results-section" class="hidden space-y-8">
+                <div id="threat-summary-container" class="card rounded-2xl p-8 hidden">
+                    <h2 class="card-title text-2xl font-bold">AI Threat Summary</h2>
+                    <p class="card-subtitle mb-4">A high-level overview generated by AI.</p>
+                    <div id="summary-controls" class="flex justify-center my-4">
+                         <button id="generate-summary-btn" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">📝 Generate Summary</button>
+                         <div id="summary-spinner" class="ml-4 hidden">
+                            <div class="w-6 h-6 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>
+                        </div>
+                    </div>
+                    <div id="threat-summary-content" class="prose max-w-none"></div>
+                </div>
+
+                <div id="guaranteed-queries-container" class="card rounded-2xl p-8 hidden">
+                    <h2 class="card-title text-2xl font-bold">Guaranteed KQL Queries</h2>
+                    <p class="card-subtitle mb-6">Based on reliably extracted IOCs.</p>
+                    <div id="guaranteed-queries-list" class="space-y-4 mt-6"></div>
+                </div>
+                
+                <div id="ai-assisted-container" class="card rounded-2xl p-8 hidden">
+                     <h2 class="card-title text-2xl font-bold">AI-Assisted Hunting Queries</h2>
+                    <p class="card-subtitle mb-4">Experimental queries for deeper investigation. Review before running.</p>
+                    <div class="flex justify-center my-4">
+                         <button id="suggest-queries-btn" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">🧠 Suggest Advanced Queries</button>
+                         <div id="ai-spinner" class="ml-4 hidden">
+                            <div class="w-6 h-6 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>
+                        </div>
+                    </div>
+                    <div id="ai-assisted-queries-list" class="space-y-4"></div>
+                </div>
+
+                <!-- Mitigation Suggestions Card -->
+                <div id="mitigation-container" class="card rounded-2xl p-8 hidden">
+                    <h2 class="card-title text-2xl font-bold">🛡️ Mitigation Suggestions</h2>
+                    <p class="card-subtitle mb-4">Actionable steps to respond to the threat, powered by Gemini.</p>
+                    <div id="mitigation-controls" class="flex justify-center my-4">
+                         <button id="suggest-mitigations-btn" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">✨ Suggest Mitigations</button>
+                         <div id="mitigation-spinner" class="ml-4 hidden">
+                            <div class="w-6 h-6 border-2 border-gray-400 border-t-white rounded-full animate-spin"></div>
+                        </div>
+                    </div>
+                    <div id="mitigation-content" class="prose max-w-none"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="card modal-content rounded-2xl p-8 w-11/12 max-w-2xl">
+            <h2 class="text-2xl font-bold mb-4">API Key Settings</h2>
+            <p class="card-subtitle mb-6">Your API keys are saved securely in your browser's local storage.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                <div class="space-y-4">
+                     <div>
+                        <label for="google-key-input" class="input-label block text-sm font-medium mb-2">Google Gemini API Key</label>
+                        <input type="password" id="google-key-input" class="input-field w-full rounded-md p-3" placeholder="Enter your Google AI Studio key">
+                    </div>
+                    <div>
+                        <label for="openrouter-key-input" class="input-label block text-sm font-medium mb-2">OpenRouter API Key</label>
+                        <input type="password" id="openrouter-key-input" class="input-field w-full rounded-md p-3" placeholder="Enter your OpenRouter key">
+                    </div>
+                    <div>
+                        <label for="openai-key-input" class="input-label block text-sm font-medium mb-2">OpenAI API Key</label>
+                        <input type="password" id="openai-key-input" class="input-field w-full rounded-md p-3" placeholder="Enter your OpenAI key">
+                    </div>
+                    <div>
+                        <label for="anthropic-key-input" class="input-label block text-sm font-medium mb-2">Anthropic Claude API Key</label>
+                        <input type="password" id="anthropic-key-input" class="input-field w-full rounded-md p-3" placeholder="Enter your Anthropic key">
+                    </div>
+                </div>
+                <div class="space-y-4 border-t md:border-t-0 md:border-l border-gray-600 pt-4 md:pt-0 md:pl-8">
+                    <h3 class="text-lg font-semibold">Azure OpenAI</h3>
+                    <div>
+                        <label for="azure-key-input" class="input-label block text-sm font-medium mb-2">Azure API Key</label>
+                        <input type="password" id="azure-key-input" class="input-field w-full rounded-md p-3" placeholder="Enter your Azure OpenAI key">
+                    </div>
+                     <div>
+                        <label for="azure-endpoint-input" class="input-label block text-sm font-medium mb-2">Azure Endpoint URL</label>
+                        <input type="text" id="azure-endpoint-input" class="input-field w-full rounded-md p-3" placeholder="https://your-resource.openai.azure.com">
+                    </div>
+                     <div>
+                        <label for="azure-deployment-input" class="input-label block text-sm font-medium mb-2">Azure Deployment Name</label>
+                        <input type="text" id="azure-deployment-input" class="input-field w-full rounded-md p-3" placeholder="Your model deployment name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-4">
+                <button id="settings-cancel-btn" class="btn-secondary rounded-md px-4 py-2 text-sm font-semibold">Cancel</button>
+                <button id="settings-save-btn" class="btn-primary rounded-md px-4 py-2 text-sm font-semibold">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Author Info Modal -->
+    <div id="info-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="card modal-content rounded-2xl p-8 w-11/12 max-w-md text-center">
+            <h2 class="text-2xl font-bold mb-2">About KQLIntel</h2>
+            <p class="card-subtitle mb-4">This tool was created by:</p>
+            <p class="text-xl font-semibold">Varshil Desai</p>
+            <a href="https://www.linkedin.com/in/varshil01/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline mt-1 block">
+                Connect on LinkedIn
+            </a>
+            <div class="mt-8 flex justify-center">
+                <button id="info-close-btn" class="btn-primary rounded-md px-6 py-2 text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Box -->
+    <div id="message-box" class="message-box fixed bottom-5 right-20 text-white px-5 py-3 rounded-lg shadow-lg opacity-0 transform translate-y-5 hidden"></div>
+    
+    <!-- Info Button -->
+    <button id="info-btn" class="fixed bottom-5 right-5 btn-secondary rounded-full p-3 shadow-lg z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+    </button>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
