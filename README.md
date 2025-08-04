@@ -65,7 +65,7 @@ KQLIntel is a pure client-side application and requires no backend. You can run 
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/KQLIntel.git](https://github.com/your-username/KQLIntel.git)
+    git clone [https://github.com/Var5h1l/KQLIntel.git](https://github.com/Var5h1l/KQLIntel.git)
     ```
 2.  **Navigate to the directory:**
     ```bash
